@@ -1,4 +1,4 @@
-FROM node:20 AS build
+FROM node:20-bookworm AS build
 
 WORKDIR /app
 
@@ -12,6 +12,7 @@ ARG VITE_API_URL
 ARG VITE_WS_URL
 ENV VITE_API_URL=$VITE_API_URL
 ENV VITE_WS_URL=$VITE_WS_URL
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 RUN npm run build
 
