@@ -188,7 +188,7 @@ export default function Login() {
         </div>
 
         <button 
-          onClick={() => window.location.href = `http://localhost:8000/oauth2/authorization/google?role=${role}&mode=login`}
+          onClick={() => window.location.href = `${import.meta.env.VITE_API_URL}/oauth2/authorization/google?role=${role}`}
           className="glass-btn-secondary" 
           style={{ 
             width: '100%', 

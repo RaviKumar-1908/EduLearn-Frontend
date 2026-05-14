@@ -16,55 +16,55 @@ const extractList = (response) => {
 // ─── Time-ago formatter ───────────────────────────────────────────────────────
 export function timeAgo(dateStr) {
   if (!dateStr) return '';
-  
+
   const date = new Date(dateStr);
   if (isNaN(date.getTime())) return 'recently';
-  
+
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-  
+
   // Future dates or very recent (handle clock skew)
   if (diffInSeconds < 30) return 'just now';
   if (diffInSeconds < 60) return 'just now';
-  
+
   if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
   if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
   if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-  
+
   return date.toLocaleDateString();
 }
 
 // ─── Type config ─────────────────────────────────────────────────────────────
 export const TYPE_CONFIG = {
   // --- Learning ---
-  ENROLLMENT:       { color: '#22c55e', icon: '📚', label: 'Enrolled' },
-  NEW_ENROLLMENT:   { color: '#10b981', icon: '👤', label: 'New Student' },
-  LESSON_COMPLETE:  { color: '#6366f1', icon: '✅', label: 'Lesson Done' },
-  COURSE_COMPLETE:  { color: '#a855f7', icon: '🎓', label: 'Course Done' },
-  CERTIFICATE:      { color: '#f59e0b', icon: '🏆', label: 'Certificate' },
-  QUIZ_RESULT:      { color: '#8b5cf6', icon: '📝', label: 'Quiz Scored' },
+  ENROLLMENT: { color: '#22c55e', icon: '📚', label: 'Enrolled' },
+  NEW_ENROLLMENT: { color: '#10b981', icon: '👤', label: 'New Student' },
+  LESSON_COMPLETE: { color: '#6366f1', icon: '✅', label: 'Lesson Done' },
+  COURSE_COMPLETE: { color: '#a855f7', icon: '🎓', label: 'Course Done' },
+  CERTIFICATE: { color: '#f59e0b', icon: '🏆', label: 'Certificate' },
+  QUIZ_RESULT: { color: '#8b5cf6', icon: '📝', label: 'Quiz Scored' },
 
   // --- Financial ---
-  PAYMENT:              { color: '#3b82f6', icon: '💳', label: 'Payment' },
+  PAYMENT: { color: '#3b82f6', icon: '💳', label: 'Payment' },
   PAYMENT_SUBSCRIPTION: { color: '#8b5cf6', icon: '💎', label: 'Subscription' },
-  PAYMENT_REFUND:       { color: '#f43f5e', icon: '↩️', label: 'Refunded' },
+  PAYMENT_REFUND: { color: '#f43f5e', icon: '↩️', label: 'Refunded' },
 
   // --- Instructor ---
   COURSE_PUBLISHED: { color: '#06b6d4', icon: '🚀', label: 'Published' },
-  COURSE_CREATED:   { color: '#14b8a6', icon: '✏️', label: 'Created' },
+  COURSE_CREATED: { color: '#14b8a6', icon: '✏️', label: 'Created' },
 
   // --- Security & Auth ---
-  AUTH_REGISTER:        { color: '#10b981', icon: '👋', label: 'Welcome' },
-  AUTH_LOGIN:           { color: '#6366f1', icon: '🛡️', label: 'Security' },
-  AUTH_STATUS_CHANGE:   { color: '#f59e0b', icon: '⚖️', label: 'Account' },
+  AUTH_REGISTER: { color: '#10b981', icon: '👋', label: 'Welcome' },
+  AUTH_LOGIN: { color: '#6366f1', icon: '🛡️', label: 'Security' },
+  AUTH_STATUS_CHANGE: { color: '#f59e0b', icon: '⚖️', label: 'Account' },
   AUTH_FORGOT_PASSWORD: { color: '#ec4899', icon: '🔑', label: 'Pass-Reset' },
 
   // --- Community & Support ---
   DISCUSSION_EVENT: { color: '#f97316', icon: '💬', label: 'Discussion' },
   BUG_REPORT_CONFIRMATION: { color: '#10b981', icon: '🎫', label: 'Bug Ticket' },
-  BUG_REPORT_UPDATE:{ color: '#ef4444', icon: '🛠️', label: 'Bug Update' },
-  ADMIN_ALERT:      { color: '#f43f5e', icon: '🚨', label: 'Admin Alert' },
-  ADMIN_ACTION:     { color: '#ef4444', icon: '🔔', label: 'Admin' },
+  BUG_REPORT_UPDATE: { color: '#ef4444', icon: '🛠️', label: 'Bug Update' },
+  ADMIN_ALERT: { color: '#f43f5e', icon: '🚨', label: 'Admin Alert' },
+  ADMIN_ACTION: { color: '#ef4444', icon: '🔔', label: 'Admin' },
 };
 
 export const getTypeConfig = (type) =>
@@ -91,8 +91,8 @@ export default function useNotifications() {
 
   const [toasts, setToasts] = useState([]);
   const [connected, setConnected] = useState(false);
-  const isMounted            = useRef(true);
-  const stompClient          = useRef(null);
+  const isMounted = useRef(true);
+  const stompClient = useRef(null);
 
   const queryClient = useQueryClient();
 
@@ -201,7 +201,7 @@ export default function useNotifications() {
       ]);
 
       const client = new Client({
-        webSocketFactory: () => new SockJS('http://localhost:8000/ws-notifications'),
+        webSocketFactory: () => new SockJS(`${import.meta.env.VITE_API_URL}/ws-notifications`),
         connectHeaders: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
