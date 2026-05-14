@@ -77,28 +77,28 @@ const MemoizedVideoPlayer = React.memo(({ videoUrl, title }) => {
   if (!embedUrl) return null;
 
   return (
-    <iframe 
-      src={embedUrl} 
-      title={title || 'Lesson Video'} 
-      frameBorder="0" 
-      allowFullScreen 
-      className="lesson-iframe" 
+    <iframe
+      src={embedUrl}
+      title={title || 'Lesson Video'}
+      frameBorder="0"
+      allowFullScreen
+      className="lesson-iframe"
     />
   );
 }, (prev, next) => prev.videoUrl === next.videoUrl && prev.title === next.title);
 
 // MEMOIZED SIDEBAR: Prevents huge list re-renders
-const CurriculumSidebar = React.memo(({ 
-  courseProgress, 
-  completedCount, 
-  totalCount, 
-  lessons, 
-  currentLessonId, 
-  completedLessonIds, 
-  isEnrolled, 
-  isInstructor, 
-  isAdmin, 
-  onLessonSelect 
+const CurriculumSidebar = React.memo(({
+  courseProgress,
+  completedCount,
+  totalCount,
+  lessons,
+  currentLessonId,
+  completedLessonIds,
+  isEnrolled,
+  isInstructor,
+  isAdmin,
+  onLessonSelect
 }) => {
   return (
     <aside className="curriculum-sidebar">
@@ -188,26 +188,29 @@ export default function Lessons() {
 
       const [courseRes, lessonsRes] = await Promise.all([
         api.get(`/api/course/${courseId}`).catch(() => null),
-        api.get(`/api/lesson/course/${courseId}`).catch(() => ({ data: [] }))
+        api.get(`/api/lesson/course/${courseId}`)
       ]);
 
-      if (!courseRes) {
+      const courseData = extractPayload(courseRes, null);
+      if (!courseData) {
         toast.error("Course not found.");
         navigate('/courses');
         return;
       }
 
-      const courseData = courseRes.data;
-      setCourseTitle(courseData.title);
+      setCourseTitle(courseData.title || 'Course Content');
       setCoursePrice(courseData.price || 0);
       setInstructorId(courseData.instructorId);
       setCourseLevel(courseData.level || 'Beginner');
       setCourseDuration(courseData.totalDuration || 0);
 
-      const allLessons = Array.isArray(lessonsRes.data) ? lessonsRes.data : [];
-      const filteredLessons = allLessons
-        .filter(l => isInstructor || l.published)
-        .sort((a, b) => (a.orderIndex || 0) - (b.orderIndex || 0));
+      const allLessons = extractPayload(lessonsRes, []);
+      console.log("DEBUG: All Lessons from Backend:", allLessons);
+
+      const filteredLessons = Array.isArray(allLessons)
+        ? allLessons.sort((a, b) => (a.orderIndex || 0) - (b.orderIndex || 0))
+        : [];
+
       setLessons(filteredLessons);
 
       if (sId) {
@@ -248,7 +251,7 @@ export default function Lessons() {
       }
 
       if (courseData.instructorId) {
-        api.get(`/auth/profile/${courseData.instructorId}`).then(res => setInstructor(res.data)).catch(() => null);
+        api.get(`/auth/profile/${courseData.instructorId}`).then(res => setInstructor(extractPayload(res, null))).catch(() => null);
       }
 
       // Selection logic

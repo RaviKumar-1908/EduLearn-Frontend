@@ -211,7 +211,7 @@ export default function QuizEditor({ courseId, quiz, onSave, onCancel }) {
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>
+      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
         <button 
           onClick={() => setActiveTab('settings')}
           className={activeTab === 'settings' ? 'glass-btn-primary' : 'glass-btn-secondary'}
@@ -225,7 +225,7 @@ export default function QuizEditor({ courseId, quiz, onSave, onCancel }) {
           style={{ padding: '0.5rem 1.5rem', position: 'relative' }}
         >
           📝 Add Questions 
-          <span style={{ background: 'rgba(255,255,255,0.2)', padding: '0.1rem 0.5rem', borderRadius: '1rem', marginLeft: '0.5rem', fontSize: '0.8rem' }}>
+          <span style={{ background: 'var(--border-color)', padding: '0.1rem 0.5rem', borderRadius: '1rem', marginLeft: '0.5rem', fontSize: '0.8rem' }}>
             {questions.length}
           </span>
         </button>
@@ -298,7 +298,7 @@ export default function QuizEditor({ courseId, quiz, onSave, onCancel }) {
             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
           >
             {questions.map((q, qIdx) => (
-              <div key={qIdx} className="glass-panel" style={{ padding: '1.5rem', borderLeft: '4px solid var(--page-primary)' }}>
+              <div key={qIdx} className="glass-panel" style={{ padding: '1.5rem', borderLeft: '4px solid var(--page-primary)', background: 'var(--card-bg)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <span style={{ background: 'var(--page-primary)', color: 'white', padding: '0.25rem 0.75rem', borderRadius: '1rem', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em' }}>
                     QUESTION {qIdx + 1}
@@ -326,8 +326,8 @@ export default function QuizEditor({ courseId, quiz, onSave, onCancel }) {
                           onClick={() => handleUpdateQuestion(qIdx, 'correctAnswer', opt)}
                           style={{
                             width: '24px', height: '24px', borderRadius: '50%', border: '2px solid', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                            borderColor: q.correctAnswer === opt && opt !== '' ? '#10b981' : 'rgba(255,255,255,0.2)',
-                            background: 'rgba(255,255,255,0.02)',
+                            borderColor: q.correctAnswer === opt && opt !== '' ? '#10b981' : 'var(--border-color)',
+                            background: 'var(--input-bg)',
                             transition: 'all 0.2s ease'
                           }}
                         >
@@ -349,7 +349,7 @@ export default function QuizEditor({ courseId, quiz, onSave, onCancel }) {
                     ))}
                   </div>
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
                     <p style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--text-primary)', fontWeight: 500, margin: 0 }}>
                       <AlertCircle size={16} /> Click the circle next to the correct answer
                     </p>
@@ -398,7 +398,7 @@ export default function QuizEditor({ courseId, quiz, onSave, onCancel }) {
               </button>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem', borderTop: '1px solid var(--border-color)' }}>
                <button 
                 onClick={handleSave} 
                 disabled={isSaving} 

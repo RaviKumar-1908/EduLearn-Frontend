@@ -24,16 +24,23 @@ const api = axios.create({
 // Request Interceptor: Auth Token Injection
 api.interceptors.request.use(
   (config) => {
+
     const token = localStorage.getItem("token");
-    if (token) {
+
+    // Public lesson endpoints should NOT send token
+    const isPublicLessonRequest =
+      config.url?.includes('/api/lesson/course/') &&
+      config.method?.toLowerCase() === 'get';
+
+    if (token && !isPublicLessonRequest) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
+
     // Support for request cancellation if needed
     if (config.cancelTokenSource) {
       config.cancelToken = config.cancelTokenSource.token;
     }
-    
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -43,6 +50,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+
     const normalizedError = normalizeApiError(error);
 
     // Logging for developers
@@ -51,16 +59,21 @@ api.interceptors.response.use(
       console.error('URL:', error.config?.url);
       console.error('Status:', normalizedError.status);
       console.error('Message:', normalizedError.message);
-      if (normalizedError.errors) console.error('Validation Errors:', normalizedError.errors);
+
+      if (normalizedError.errors) {
+        console.error('Validation Errors:', normalizedError.errors);
+      }
+
       console.groupEnd();
     }
 
     // Session Management: Handle Unauthorized
     if (normalizedError.status === 401) {
+
       // Clear sensitive auth data on session expiry
       localStorage.removeItem('token');
       localStorage.removeItem('userGender');
-      
+
       // Redirect to login only if we're not already there
       if (!window.location.pathname.includes('/login')) {
         window.location.href = '/login?expired=true';

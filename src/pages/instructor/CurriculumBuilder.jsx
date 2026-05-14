@@ -537,7 +537,7 @@ export default function CurriculumBuilder() {
         .modal-title { margin: 0 0 1.5rem 0; font-size: 1.4rem; font-weight: 950; }
         .lesson-form { display: flex; flex-direction: column; gap: 1.25rem; }
         .input-group label { display: block; margin-bottom: 0.4rem; font-weight: 800; font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
-        .glass-input { width: 100%; padding: 0.75rem 1rem; border-radius: 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); color: white; outline: none; transition: border-color 0.2s; }
+        .glass-input { width: 100%; padding: 0.75rem 1rem; border-radius: 1rem; background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-primary); outline: none; transition: border-color 0.2s; }
         .glass-input:focus { border-color: #6366f1; }
         .modal-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         .checkbox-group { display: flex; align-items: center; gap: 0.75rem; background: rgba(255,255,255,0.02); padding: 0.75rem; border-radius: 0.75rem; border: 1px solid var(--border-color); }

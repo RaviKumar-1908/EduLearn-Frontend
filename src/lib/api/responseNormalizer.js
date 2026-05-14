@@ -43,6 +43,11 @@ export const extractCollection = (payload, candidateKeys = []) => {
 export const extractPayload = (payload) => {
   if (!payload || typeof payload !== 'object') return payload;
   
+  // If it's an Axios response object, always unwrap the 'data' field
+  if (payload.config && payload.headers && 'data' in payload) {
+    return payload.data;
+  }
+  
   if ('data' in payload && !Array.isArray(payload.data)) return payload.data;
   if ('payload' in payload && !Array.isArray(payload.payload)) return payload.payload;
   
